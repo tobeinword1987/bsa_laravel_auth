@@ -5,9 +5,9 @@ use App\Book;
 
 @extends('app')
 
-@section('pageTitle')
+@section('pagetitle')
     User List
-@stop
+  @stop
 
 @section('content')
 
@@ -57,7 +57,7 @@ use App\Book;
                     <td>{{$user->email}}</td>
                     <td width="380">
                         <a class="btn btn-sm btn-success" href="{{ URL::to('users',$user->id) }}">Update</a>
-                        <a class="btn btn-sm btn-info" href="{{ URL::to('users',$user->id) }}">Info</a>
+                        <a class="btn btn-sm btn-info" href="{{ URL::to('users/info',$user->id) }}">Info</a>
                         @if(\App\Book::where('user_id', $user->id)->first()==null)
                             {!! Form::open(array('url' => 'users/'.$user->id, 'class' => 'pull-right','method' => 'DELETE')) !!}
                             {!! Form::hidden('method','DELETE') !!}

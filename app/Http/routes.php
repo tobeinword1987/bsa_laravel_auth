@@ -21,6 +21,17 @@ Route::get('/library', function(){
 
 Route::resource('users','UserController');
 
-Route::delete('/users',['uses' => 'App\Http\Controllers\UserController@destroy']);
-
 Route::resource('books','BookController');
+
+
+//Route::put('users/turnbook/{id}','UserController@turnbook');
+//
+//Route::get('users/info/{id}','UserController@info');
+//
+//Route::put('users/getbook/{id}/{id_user}','UserController@getbook');
+
+Route::group(['prefix' => 'users/'],function(){
+    Route::get('info/{id}','UserController@info');
+    Route::put('turnbook/{id}','UserController@turnbook');
+    Route::put('getbook/{id}/{id_user}','UserController@getbook');
+});

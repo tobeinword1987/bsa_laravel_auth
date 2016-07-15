@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Book;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -101,14 +102,16 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $user=User::find($id);
 
         $this->validate($request, [
             'firstname' => 'required|alpha',
             'lastname' => 'required|alpha',
-            'email' => 'required|email|unique:users',
+//            'email' => 'required|email|unique:users',
+            'email' => 'required|email|max:255|unique:users,email,'.$user->id,
             ]);
 
-            $user=User::find($id);
+
             $user->firstname=$request->firstname;
             $user->lastname=$request->lastname;
             $user->email=$request->email;
@@ -131,5 +134,45 @@ class UserController extends Controller
 
         Session::flash('message','Successfully deleted user');
         return Redirect::to('users');
+    }
+    
+    public function info($id)
+    {
+//        $books = User::find($id)->book;
+        $user=User::find($id);
+
+        $books= DB::table('books')
+            ->select('books.*','users.firstname')
+            ->leftJoin('users', 'users.id', '=', 'books.user_id')
+            ->whereNull('books.user_id')
+            ->orWhere('users.id','=',$id)
+            ->paginate(10);
+        return view('user.info',array('books' => $books,'user' => $user));
+    }
+
+    public function turnbook($id)
+    {
+        $book=Book::find($id);
+        $user=User::find($book->user_id);
+
+        $book->user_id=null;
+
+        if($book->save()){
+
+            Session::flash('message','User turned book in library))');
+            return Redirect::to('users/info/'.$user->id);
+        }
+    }
+
+    public function getbook($id,$id_user)
+    {
+        $user=User::find($id_user);
+        $book=Book::find($id);
+        $book->user_id=$id_user;
+        
+        if($book->save()){
+            Session::flash('message','User got book in library))');
+            return Redirect::to('users/info/'.$user->id);
+        }
     }
 }

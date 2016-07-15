@@ -5,7 +5,7 @@ use App\Book;
 
 @extends('app')
 
-@section('pageTitle')
+@section('pagetitle')
     Book List
 @stop
 

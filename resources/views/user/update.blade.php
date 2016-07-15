@@ -11,7 +11,7 @@ use App\Book;
 
 @extends('app')
 
-@section('pageTitle')
+@section('pagetitle')
     User edit
 @stop
 
