@@ -59,7 +59,7 @@ class UserController extends Controller
         }
         else{
         $user=new User();
-        $user->firs = $request->firstname;
+        $user->firstname = $request->firstname;
         $user->lastname=$request->lastname;
         $user->email=$request->email;
 

@@ -22,3 +22,5 @@ Route::get('/library', function(){
 Route::resource('users','UserController');
 
 Route::delete('/users',['uses' => 'App\Http\Controllers\UserController@destroy']);
+
+Route::resource('books','BookController');

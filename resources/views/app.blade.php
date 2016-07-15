@@ -14,7 +14,7 @@
     <nav class="navbar navbar-inverse">
         <ul class="nav navbar-nav">
             <li><a href="{{URL::to("users")}}">Users</a></li>
-            <li><a href="{{URL::to("library/books")}}">Books</a></li>
+            <li><a href="{{URL::to("books")}}">Books</a></li>
         </ul>
     </nav>
 

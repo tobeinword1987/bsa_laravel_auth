@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Book;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class BookController extends Controller
 {
@@ -15,7 +19,11 @@ class BookController extends Controller
      */
     public function index()
     {
-        //
+        $books=DB::table('books')
+            ->orderBy('updated_at','desc')
+            ->paginate(10);
+
+        return view ('book.index',array('books' => $books));
     }
 
     /**
@@ -36,7 +44,31 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules=array(
+            'title' => 'required',
+            'author' => 'required|alpha',
+            'year' => 'required|numeric|max:2016|min:1000',
+            'genre' => 'required|alpha',
+        );
+
+        $validator=Validator::make($request->all(),$rules);
+
+        if ($validator->fails()){
+            return Redirect::to('books')
+                ->withErrors($validator)
+                ->withInput();
+        }
+        else{
+            $book=new Book();
+            $book->title = $request->title;
+            $book->author= $request->author;
+            $book->year= $request->year;
+            $book->genre= $request->genre;
+
+            $book->save();
+            Session::flash('message','Successfully created book');
+            return Redirect::to('books');
+        }
     }
 
     /**
@@ -47,7 +79,8 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        //
+        $book=Book::find($id);
+        return view('book.update',array('book' => $book));
     }
 
     /**
@@ -70,7 +103,23 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $this->validate($request, [
+            'title' => 'required',
+            'author' => 'required|alpha',
+            'year' => 'required|numeric|max:2016|min:1000',
+            'genre' => 'required|alpha',
+        ]);
+
+        $book=Book::find($id);
+        $book->title = $request->title;
+        $book->author= $request->author;
+        $book->year= $request->year;
+        $book->genre= $request->genre;
+
+        $book->save();
+        Session::flash('message','Successfully updated book');
+        return Redirect::to('books');
     }
 
     /**
@@ -81,6 +130,10 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $book=Book::find($id);
+        $book->delete();
+
+        Session::flash('message','Successfully deleted book');
+        return Redirect::to('books');
     }
 }
