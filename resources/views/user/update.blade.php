@@ -26,7 +26,8 @@ use App\Book;
     @endif
 
     {!! Form::model($user,array('url'=>array('users',$user->id),'method' => 'PUT')) !!}
-{{--    {!! Form::open(array('url'=>'users','method' => 'PUT')) !!}--}}
+
+    {{ csrf_field() }}
 
     <div class="form-group">
         {!! Form::label('firstname','Enter firstname') !!}
@@ -39,9 +40,20 @@ use App\Book;
     </div>
 
     <div class="form-group">
+        {!! Form::label('role','Choose role') !!}
+        {!! Form::select('role',array('reader','admin'),$user->role)!!}
+        {{--{!! Form::text('role',$user->role,array('class'=>'form-control')) !!}--}}
+    </div>
+
+    <div class="form-group">
         {!! Form::label('email','Enter email') !!}
         {!! Form::text('email',$user->email,array('class'=>'form-control')) !!}
     </div>
+
+    {{--<div class="form-group">--}}
+        {{--{!! Form::label('password','Enter password') !!}--}}
+        {{--{!! Form::text('password',encrypt($user->password),array('class'=>'form-control')) !!}--}}
+    {{--</div>--}}
 
     {!! Form::submit('Update', array('class'=>'btn btn-primary','style' => 'margin-bottom:10px')) !!}
 

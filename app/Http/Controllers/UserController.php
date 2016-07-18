@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Book;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Redirect;
@@ -18,8 +19,12 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+//$this->authorize('create');
+
     public function index()
     {
+
         $users=DB::table('users')
             ->orderBy('updated_at','desc')
             ->paginate(10);
@@ -45,10 +50,12 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
         $rules=array(
           'firstname' => 'required|alpha',
           'lastname' => 'required|alpha',
-        'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
         );
 
         $validator=Validator::make($request->all(),$rules);
@@ -63,6 +70,15 @@ class UserController extends Controller
         $user->firstname = $request->firstname;
         $user->lastname=$request->lastname;
         $user->email=$request->email;
+        $user->password=bcrypt($request->password);
+        if($request->role==1)
+        {
+            $user->role="admin";
+        }
+        else{
+            $user->role="reader";
+        }
+
 
         $user->save();
         Session::flash('message','Successfully created user');
@@ -107,14 +123,23 @@ class UserController extends Controller
         $this->validate($request, [
             'firstname' => 'required|alpha',
             'lastname' => 'required|alpha',
-//            'email' => 'required|email|unique:users',
             'email' => 'required|email|max:255|unique:users,email,'.$user->id,
+//            'password' => 'required|min:6',
             ]);
 
 
             $user->firstname=$request->firstname;
             $user->lastname=$request->lastname;
             $user->email=$request->email;
+            $user->role=$request->role;
+//            $user->password=bcrypt($request->password);
+            if($request->role==1)
+            {
+                $user->role="admin";
+            }
+            else{
+                $user->role="reader";
+            }
 
             $user->save();
             Session::flash('message','Successfully updated user');
@@ -129,6 +154,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+
         $user=User::find($id);
         $user->delete();
 
@@ -152,6 +178,7 @@ class UserController extends Controller
 
     public function turnbook($id)
     {
+
         $book=Book::find($id);
         $user=User::find($book->user_id);
 
@@ -166,6 +193,7 @@ class UserController extends Controller
 
     public function getbook($id,$id_user)
     {
+
         $user=User::find($id_user);
         $book=Book::find($id);
         $book->user_id=$id_user;

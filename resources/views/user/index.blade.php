@@ -20,6 +20,8 @@ use App\Book;
     @endif
 
     {!! Form::open(array('url'=>'users')) !!}
+    {{ csrf_field() }}
+
     <div class="form-group">
         {!! Form::label('firstname','Enter firstname') !!}
         {!! Form::text('firstname',Input::old('firstname'),array('class'=>'form-control'))!!}
@@ -31,8 +33,18 @@ use App\Book;
     </div>
 
     <div class="form-group">
+        {!! Form::label('role','Choose role') !!}
+        {!! Form::select('role',['reader','admin'],'reader',array('class'=>'form-control'))!!}
+    </div>
+
+    <div class="form-group">
         {!! Form::label('email','Enter email') !!}
         {!! Form::text('email',Input::old('email'),array('class'=>'form-control'))!!}
+    </div>
+
+    <div class="form-group">
+        {!! Form::label('password','Enter password') !!}
+        {!! Form::text('password',Input::old('password'),array('class'=>'form-control'))!!}
     </div>
 
     {!! Form::submit('Save', array('class'=>'btn btn-primary','style' => 'margin-bottom:10px')) !!}

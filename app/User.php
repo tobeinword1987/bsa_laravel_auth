@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * Class User
@@ -10,9 +11,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $lastname
  * @property string $email
  */
-class User extends Model
+class User  extends Authenticatable
+//    Model
 {
-    protected $fillable = ['firstname','lastname', 'email'];
+    protected $fillable = ['firstname','lastname', 'email','password', 'role'];
+
+    protected $hidden = [
+        'remember_token',
+    ];
 
 
     public function book()

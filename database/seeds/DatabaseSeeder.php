@@ -13,5 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         factory(App\User::class, 50)->create();
         factory(App\Book::class, 100)->create();
+        $this->call('SuperUserSeeder');
     }
 }

@@ -19,30 +19,34 @@ use App\Book;
         </div>
     @endif
 
-    {!! Form::open(array('url'=>'books')) !!}
-    <div class="form-group">
-        {!! Form::label('title','Enter title') !!}
-        {!! Form::text('title',Input::old('title'),array('class'=>'form-control'))!!}
-    </div>
+    @can('admin') <!-- проверяем права -->
 
-    <div class="form-group">
-        {!! Form::label('author','Enter author') !!}
-        {!! Form::text('author',Input::old('author'),array('class'=>'form-control'))!!}
-    </div>
+        {!! Form::open(array('url'=>'books')) !!}
+        <div class="form-group">
+            {!! Form::label('title','Enter title') !!}
+            {!! Form::text('title',Input::old('title'),array('class'=>'form-control'))!!}
+        </div>
 
-    <div class="form-group">
-        {!! Form::label('year','Enter year') !!}
-        {!! Form::text('year',Input::old('year'),array('class'=>'form-control'))!!}
-    </div>
+        <div class="form-group">
+            {!! Form::label('author','Enter author') !!}
+            {!! Form::text('author',Input::old('author'),array('class'=>'form-control'))!!}
+        </div>
 
-    <div class="form-group">
-        {!! Form::label('genre','Enter genre') !!}
-        {!! Form::text('genre',Input::old('genre'),array('class'=>'form-control'))!!}
-    </div>
+        <div class="form-group">
+            {!! Form::label('year','Enter year') !!}
+            {!! Form::text('year',Input::old('year'),array('class'=>'form-control'))!!}
+        </div>
 
-    {!! Form::submit('Save', array('class'=>'btn btn-primary','style' => 'margin-bottom:10px')) !!}
+        <div class="form-group">
+            {!! Form::label('genre','Enter genre') !!}
+            {!! Form::text('genre',Input::old('genre'),array('class'=>'form-control'))!!}
+        </div>
 
-    {!! Form::close() !!}
+        {!! Form::submit('Save', array('class'=>'btn btn-primary','style' => 'margin-bottom:10px')) !!}
+
+        {!! Form::close() !!}
+
+    @endcan
 
     <table class="table table-striped table-bordered table-hover">
         <thead>
@@ -66,15 +70,18 @@ use App\Book;
                     <td>{{DB::table('books')->where('id','=',$book->id)->whereNull('user_id')->count()>0?'':
                         Book::with('user')->where('id','=',$book->id)->first()->user->firstname." ".
                         Book::with('user')->where('id','=',$book->id)->first()->user->lastname}}</td>
-                    <td width="380">
-                        <a class="btn btn-sm btn-success" href="{{ URL::to('books',$book->id) }}">Update</a>
-                        @if(DB::table('books')->where('id','=',$book->id)->whereNull('user_id')->count()>0)
-                            {!! Form::open(array('url' => 'books/'.$book->id, 'class' => 'pull-right','method' => 'DELETE')) !!}
-                            {!! Form::hidden('method','DELETE') !!}
-                            {!! Form::submit('Delete',array('class' => 'btn-warning')) !!}
-                            {!! Form::close() !!}
-                        @endif
-                    </td>
+                    @can('admin') <!-- проверяем права -->
+                        <td width="380">
+                            <a class="btn btn-sm btn-success" href="{{ URL::to('books',$book->id) }}">Update</a>
+
+                            @if(DB::table('books')->where('id','=',$book->id)->whereNull('user_id')->count()>0)
+                                {!! Form::open(array('url' => 'books/'.$book->id, 'class' => 'pull-right','method' => 'DELETE')) !!}
+                                {!! Form::hidden('method','DELETE') !!}
+                                {!! Form::submit('Delete',array('class' => 'btn-warning')) !!}
+                                {!! Form::close() !!}
+                            @endif
+                        </td>
+                    @endcan
                 </tr>
             @endforeach
         </tbody>

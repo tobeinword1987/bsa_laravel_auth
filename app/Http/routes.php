@@ -35,3 +35,9 @@ Route::group(['prefix' => 'users/'],function(){
     Route::put('turnbook/{id}','UserController@turnbook');
     Route::put('getbook/{id}/{id_user}','UserController@getbook');
 });
+Route::auth();
+
+Route::get('/home', 'HomeController@index');
+
+Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
+Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');

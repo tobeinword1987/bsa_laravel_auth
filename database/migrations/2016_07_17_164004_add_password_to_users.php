@@ -14,7 +14,7 @@ class AddPasswordToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('password');
-            $table->string('role');
+            $table->enum('role',['reader','admin'])->default('reader');
             $table->rememberToken();
         });
     }

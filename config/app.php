@@ -158,7 +158,8 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Mpociot\LaravelTestFactoryHelper\TestFactoryHelperServiceProvider::class,
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        Overtrue\LaravelSocialite\ServiceProvider::class
 
     ],
 
@@ -208,7 +209,7 @@ return [
         'Form' =>Illuminate\Html\FormFacade::class,
         'HTML' => Illuminate\Html\HtmlFacade::class,
         'Input' => Illuminate\Support\Facades\Input::class,
-
+        'Socialite' => Overtrue\LaravelSocialite\Socialite::class,
     ],
 
 ];

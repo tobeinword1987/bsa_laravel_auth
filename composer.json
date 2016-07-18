@@ -9,7 +9,8 @@
         "laravel/framework": "5.2.*",
         "mpociot/laravel-test-factory-helper": "^0.2.1",
         "Illuminate/html":"5.0.*",
-        "barryvdh/laravel-ide-helper": "^2.2"
+        "barryvdh/laravel-ide-helper": "^2.2",
+        "overtrue/laravel-socialite": "~1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
