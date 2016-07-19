@@ -23,6 +23,8 @@ Route::resource('users','UserController');
 
 Route::resource('books','BookController');
 
+Route::resource('profile','ProfileController');
+
 
 //Route::put('users/turnbook/{id}','UserController@turnbook');
 //

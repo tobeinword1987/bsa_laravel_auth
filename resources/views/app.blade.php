@@ -16,6 +16,7 @@
             @can('admin') <!-- проверяем права -->
                 <li><a href="{{URL::to("users")}}">Users</a></li>
             @endcan
+            <li><a href="{{URL::to("profile")}}">Edit profile</a></li>
             <li><a href="{{URL::to("books")}}">Books</a></li>
             <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
         </ul>
