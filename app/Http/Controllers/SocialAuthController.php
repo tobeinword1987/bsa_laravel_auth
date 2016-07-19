@@ -42,14 +42,12 @@ class SocialAuthController extends Controller
             {
                 $user=User::create(
                     [
-                        'firstname' => $socialuser->login,
                         'email' => $socialuser->email,
-                        'password' => bcrypt($socialuser->password)
                     ]
                 );
             }
         Auth::login($user);
 
-        return redirect('/home');
+        return redirect('/books');
     }
 }
